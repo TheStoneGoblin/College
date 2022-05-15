@@ -1,0 +1,66 @@
+#lang racket
+;;Gabriel Stan
+;;21307377
+
+;;this program converts any decimal number to its hexadecimal equivalent
+;;a for remainder
+(define a 0)
+;;hexOutput is going to be the final hexadecimal 
+(define hexOutput (list))
+;;hex0 calculates the hexadecimal.
+;;if x = 0 on first run hex outputs nothing.
+;;otherwise it gets the remainder of the inputed number(x) and stores it in a, a is used to get the corresponding hex character for each decimal number and place it in hexOutput.
+;;the function then calls on itself but this time it uses x/16(integer division).
+;;it repeats the above 2 steps until x/16 outputs 0, at which point it display the hexadecimal number(hexOutput) and resets the hexOutput to be empty.
+
+(define hex0(lambda(x) (if (= x 0)
+                                (begin
+                                (display hexOutput)
+                                (set! hexOutput (list))
+                                     )
+                                
+                                (begin
+                                (set! a (remainder x 16))
+                                (set! hexOutput (cons (cdr (assoc a '((0 . 0) (1 . 1) (2 . 2) (3 . 3) (4 . 4) (5 . 5) (6 . 6) (7 . 7) (8 . 8) (9 . 9) (10 . A) (11 . B) (12 . C) (13 . D) (14 . E) (15 . F)))) hexOutput))
+                                (hex0 (quotient x 16))
+                                     )
+
+                               )
+                          ))
+
+;this is the function that should be run
+;this is a separate function that checks for booleans, string and negative numbers before running the main function hex0
+;if the input is a boolean or a string #f is outputed, if it is a negative number a "-" is outputed before the number
+(define hex(lambda(x)(if(boolean? x) (display #f)
+                        (if(string? x) (display #f)
+                        (if (negative? x)
+                         (begin
+                          (display "-")
+                          (hex0 (* x -1))
+                         )
+                         (begin
+                          (display "")
+                          (hex0 x)
+                         )
+                         )
+                        )
+                       )
+             ))
+
+;---test data / do (runTest 1) to run
+
+(define runTest(lambda(x) (if (= x)
+                (begin
+                 (map hex (list 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15))(display "\n")
+                 (map hex (list 2 3 5 -34513 -564234456))(display "\n")
+                 (map hex (list 8 23 6 "graphs are kinda cringe bruh" "asfds" "huzzah!" #t #t #f #f ))(display "\n")
+                 (map hex (list 3 6 7 1 #t #f #t #t))(display "\n")
+                 (map hex (list 324 234 235 "jedward" "sfgdf" "asdsd"))(display "\n")
+                )1
+               )))
+
+;---test
+
+;;to run this program do (hex number), example:
+;;>(hex 342)
+;;(1 5 6)

@@ -1,2 +1,2 @@
 # College
-Most college projects
+A collection of college projects
